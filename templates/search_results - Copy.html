@@ -1,0 +1,430 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="{% static 'jQuery-Multiple-Select-Plugin-For-Bootstrap-Bootstrap-Multiselect/dist/css/bootstrap-multiselect.css' %}" type="text/css">
+<script type="text/javascript" src="{% static 'jQuery-Multiple-Select-Plugin-For-Bootstrap-Bootstrap-Multiselect/dist/js/bootstrap-multiselect.js' %}"></script>
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
+<link rel="stylesheet" href="{% static 'bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css' %}" type="text/css">
+<script type="text/javascript" src="{% static 'bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js' %}"></script>
+
+
+
+<script>
+
+$(function() {
+
+	var availableTags = [
+        "chicken",
+	    "spinach",
+	    "apple",
+	    "tofu",
+	    "noodle",
+	    "carrot",
+	    "beef",
+	    "fish",
+	    "cabbage",
+	    "paneer"
+
+    ];
+    function split( val ) {
+      return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+      return split( term ).pop();
+    }
+ 
+    $( "#tags2" )
+      // don't navigate away from the field on tab when selecting an item
+      .bind( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).autocomplete( "instance" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        minLength: 0,
+        source: function( request, response ) {
+          // delegate back to autocomplete, but extract the last term
+          response( $.ui.autocomplete.filter(
+            availableTags, extractLast( request.term ) ) );
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          this.value = terms.join(",");
+		  
+		  
+		  //$('#tagsname').html('You selected: ' + this.value);
+          return false;
+        }
+      });
+
+      $( "#tags3" )
+      // don't navigate away from the field on tab when selecting an item
+      .bind( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).autocomplete( "instance" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        minLength: 0,
+        source: function( request, response ) {
+          // delegate back to autocomplete, but extract the last term
+          response( $.ui.autocomplete.filter(
+            availableTags, extractLast( request.term ) ) );
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          this.value = terms.join(",");
+		  
+		  
+		  //$('#tagsname').html('You selected: ' + this.value);
+          return false;
+        }
+      });
+
+
+     $(document).ready(function() {
+		$('#demo').multiselect();
+		$('#taste').multiselect();
+		$('#delete').multiselect();
+
+		$('#add').multiselect({
+            enableFiltering: true,
+            includeSelectAllOption: true,
+            maxHeight: 400
+            //dropUp: true
+        });
+	});
+
+    
+  });
+
+</script>
+
+<style type="text/css">
+#one {
+  background-color:#FFCC33;
+  height:150px;    
+}
+
+#leftcolumn { width: 15%; float: left;
+}
+
+#rightcolumn { 
+  width: 85%; 
+  float: right;
+  background-image: url({% static 'bubble_1.jpg' %}); 
+  background-size: cover;
+  padding-left: 40px; 
+  }
+
+#div2 {
+    white-space: nowrap; 
+    width: 12em; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    
+}
+
+
+</style>
+
+
+</head>
+<body>
+	<form role="form" action="/search_recipes/" method="get">
+	<div id="one">
+	
+	<center>
+    <img src="{% static 'inhousemenu_logo2.png' %}" height="150" width="400"/>
+	</center>
+
+    </div>
+
+    <div id="leftcolumn">
+
+    	<div class="container">
+  
+	  	
+	    	<div class="form-group">
+
+	    			<br>
+				  	<!--<label for="tags">Add ingredient(s) </label> <br>
+				    <input id="tags2" name="q2" size="20">
+				    -->
+
+				    {% if ingredients_name_list|length > 0 %}
+						<label for="add">Add ingredient(s) </label> <br>
+						<select id="add" name="add" multiple="multiple" style="width: 200px;">
+							{% for s in ingredients_name_list %}
+		    				 <option value={{s.ingredient_name}}> {{s.ingredient_name}} </option>
+						    {% endfor %}
+						</select>
+
+					{% endif %}
+				  
+				  	<br>
+				  	<br>
+				  	{% if search_set|length > 0 %}
+				  		<label for="sel4">Selected ingredient(s)</label>
+						<br>
+			    		
+				  		{% for s in search_set %}
+				  		 	<label class="checkbox-inline"><input type="checkbox" name="checks[]" value={{s}} checked> {{s}} </label>
+				  		 	<br>
+						{% endfor %}
+					  	
+						<br>
+					
+				  	{% endif %}
+	    			<label for="sel3">Flavour Type</label>
+	    			<br>
+	    			<select name="taste[]" id="taste" multiple="multiple">
+	    				<option value="mixed" {% if "mixed" in taste_type %} selected {% endif %} >Mixed Taste</option>
+					    <option value="spicy&hot" {% if "spicy&hot" in taste_type %} selected {% endif %} >Spicy & Hot</option>
+						<option value="thick&creamy" {% if "thick&creamy" in taste_type %} selected {% endif %} >Thick & Creamy</option>
+						<option value="light&refresh" {% if "light&refresh" in taste_type %} selected {% endif %} >Light & Refresh</option>
+						<option value="crispy&crunchy" {% if "crispy&crunchy" in taste_type %} selected {% endif %} >Crispy & Crunchy</option>
+						
+					</select>
+
+					<br><br>
+	      			<label for="sel1">Meal type</label>
+	      			<select class="form-control" name="meal_type" id="sel1" style="width: 200px;">
+				        <option value="All" {% if meal_type.0 == "All" %} selected {% endif %} >All</option>
+				        <option value="Entree + Main" {% if meal_type.0 == "Entree + Main" %} selected {% endif %} >Entree + Main</option>
+						<option value="Desserts" {% if meal_type.0 == "Desserts" %} selected {% endif %} >Desserts</option>
+						<option value="Congee" {% if meal_type.0 == "Congee" %} selected {% endif %} >Congee</option>
+						<option value="Soups" {% if meal_type.0 == "Soups" %} selected {% endif %} >Soups</option>
+	      			</select>
+
+	      			<br>
+	      			<label for="sel2">Cuisine type</label>
+	      			<select class="form-control" name="cuisine_type" id="sel2" style="width: 200px;">
+				        <option value="All" {% if cuisine_type.0 == "All" %} selected {% endif %} >All</option>
+				        <option value="Australian" {% if cuisine_type.0 == "Australian" %} selected {% endif %} >Australian</option>
+						<option value="Chinese" {% if cuisine_type.0 == "Chinese" %} selected {% endif %} >Chinese</option>
+						<option value="Indian" {% if cuisine_type.0 == "Indian" %} selected {% endif %} >Indian</option>
+					</select>
+
+	      			
+					<br>
+					<input type="submit" value="Search"> 
+
+	     	</div>
+	  	
+		</div>
+
+
+    </div>
+
+    <div id="rightcolumn">
+    		
+    		<!--{% for c in checks_list %}
+    			<input type="hidden" name="checks[]" value={% if c %} {{ c }} {% else %} "" {% endif %} >
+    		{% endfor %}
+			-->
+
+    		<!--{% if other_list|length > 0 %}
+				{% for ot in other_list %}
+				  	<input type="hidden" name="other" value={{ ot }} >
+				{% endfor %}
+					<br>
+					<br>
+			{% endif %}
+
+    	<input type="hidden" name="q" value={% if q %} {{ q }} {% else %} "" {% endif %} >-->
+    		
+    		{% if search_set|length > 0 %}
+
+    			You searched for these ingredients : 
+    			{% for s in search_set %}
+    				{{ s }} ,
+    			{% endfor %}
+    		{% endif %}
+
+    		
+
+    		<!-- ******************* MAIN *********************** -->
+    		{% if sorted_main_rank_dic|length > 0 %}
+    			<h3>MAINS</h3>
+    			<table style="width:100%" border="0">
+    			<tr>
+    			{% for key, value in sorted_main_rank_dic %}
+    				{% if forloop.counter0|divisibleby:4 %}
+    					</tr>
+						<tr>
+						<td>
+							<img src="{% static 'images/' %}{{ key }}.jpg" alt="No Image" height="150" width="150" /><br>
+							<a href="/get_full_recipe/{{ key }}"/>
+								<div id="div2">{{ key }}</div> 
+								
+							</a> <br>
+    					</td>
+    				{% else %}
+    					<td>
+    						<img src="{% static 'images/' %}{{ key }}.jpg" alt="No Image" height="150" width="150" /><br>
+							<a href="/get_full_recipe/{{ key }}"/>
+								<div id="div2">{{ key }}</div> 
+							</a> <br>
+							
+    					</td>
+    				{% endif %}
+				{% endfor %}
+				</tr>
+				</table>
+    		{% endif %}
+
+    		<!-- ******************* ENTREE *********************** -->
+    		{% if sorted_entree_rank_dic|length > 0 %}
+    			<h3>ENTREE</h3>
+    			<table style="width:100%" border="0">
+    			<tr>
+    			{% for key, value in sorted_entree_rank_dic %}
+    				{% if forloop.counter0|divisibleby:4 %}
+    					</tr>
+						<tr>
+						<td>
+							<img src="{% static 'images/' %}{{ key }}.jpg" alt="No Image" height="130" width="130" /><br>
+							<a href="/get_full_recipe/{{ key }}"/>
+								<div id="div2">{{ key }}</div> 
+							</a><br>
+    					</td>
+    				{% else %}
+    					<td>
+    						<img src="{% static 'images/' %}{{ key }}.jpg" alt="No Image" height="130" width="130" /><br>
+							<a href="/get_full_recipe/{{ key }}"/>
+								<div id="div2">{{ key }}</div> 
+							</a> <br>
+    					</td>
+    				{% endif %}
+				{% endfor %}
+				</tr>
+				</table>
+    		{% endif %}
+
+    		<!-- ******************* DESSERT *********************** -->
+    		{% if sorted_dessert_rank_dic|length > 0 %}
+    			<h3>DESSERT</h3>
+    			<table style="width:100%" border="0">
+    			<tr>
+    			{% for key, value in sorted_dessert_rank_dic %}
+    				{% if forloop.counter0|divisibleby:4 %}
+    					</tr>
+						<tr>
+						<td>
+							<img src="{% static 'images/' %}{{ key }}.jpg" alt="No Image" height="130" width="130" /><br>
+							<a href="/get_full_recipe/{{ key }}"/>
+								<div id="div2">{{ key }}</div> 
+							</a><br>
+    					</td>
+    				{% else %}
+    					<td>
+    						<img src="{% static 'images/' %}{{ key }}.jpg" alt="No Image" height="130" width="130" /><br>
+							<a href="/get_full_recipe/{{ key }}"/>
+								<div id="div2">{{ key }}</div> 
+							</a><br>
+    					</td>
+    				{% endif %}
+				{% endfor %}
+				</tr>
+				</table>
+    		{% endif %}
+
+    		<!-- ******************* SOUP *********************** -->
+    		{% if sorted_soup_rank_dic|length > 0 %}
+    			<h3>SOUP</h3>
+    			<table style="width:100%" border="0">
+    			<tr>
+    			{% for key, value in sorted_soup_rank_dic %}
+    				{% if forloop.counter0|divisibleby:4 %}
+    					</tr>
+						<tr>
+						<td>
+							<img src="{% static 'images/' %}{{ key }}.jpg" alt="No Image" height="130" width="130" /><br>
+							<a href="/get_full_recipe/{{ key }}"/>
+								<div id="div2">{{ key }}</div> 
+							</a><br>
+    					</td>
+    				{% else %}
+    					<td>
+    						<img src="{% static 'images/' %}{{ key }}.jpg" alt="No Image" height="130" width="130" /><br>
+							<a href="/get_full_recipe/{{ key }}"/>
+								<div id="div2">{{ key }}</div> 
+							</a><br>
+    					</td>
+    				{% endif %}
+				{% endfor %}
+				</tr>
+				</table>
+    		{% endif %}
+    		<!-- ******************* CONGEE *********************** -->
+    		{% if sorted_congee_rank_dic|length > 0 %}
+    			<h3>CONGEE</h3>
+    			<table style="width:100%" border="0">
+    			<tr>
+    			{% for key, value in sorted_congee_rank_dic %}
+    				{% if forloop.counter0|divisibleby:4 %}
+    					</tr>
+						<tr>
+						<td>
+							<img src="{% static 'images/' %}{{ key }}.jpg" alt="No Image" height="130" width="130" /><br>
+							<a href="/get_full_recipe/{{ key }}"/>
+								<div id="div2">{{ key }}</div> 
+							</a><br>
+    					</td>
+    				{% else %}
+    					<td>
+    						<img src="{% static 'images/' %}{{ key }}.jpg" alt="No Image" height="130" width="130" /><br>
+							<a href="/get_full_recipe/{{ key }}"/>
+								<div id="div2">{{ key }}</div> 
+							</a><br>
+    					</td>
+    				{% endif %}
+				{% endfor %}
+				</tr>
+				</table>
+    		{% endif %}
+
+    		
+    		
+	</div> <!-- End rightcolumn div -->
+
+
+ </form>
+</body>
+</html>

@@ -1,0 +1,241 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="{% static 'jQuery-Multiple-Select-Plugin-For-Bootstrap-Bootstrap-Multiselect/dist/css/bootstrap-multiselect.css' %}" type="text/css">
+<script type="text/javascript" src="{% static 'jQuery-Multiple-Select-Plugin-For-Bootstrap-Bootstrap-Multiselect/dist/js/bootstrap-multiselect.js' %}"></script>
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
+<link rel="stylesheet" href="{% static 'bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css' %}" type="text/css">
+<script type="text/javascript" src="{% static 'bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js' %}"></script>
+
+
+<script>
+
+	function run() {
+    	//alert("hello");
+    	var x = document.getElementById("Ultra");
+    	//alert(x.value);
+    	var myDiv = document.getElementById("checks[]");
+		
+		alert(myDiv.value);
+
+	}
+
+  $(function() {
+    var availableTags = [
+        "chicken",
+	    "spinach",
+	    "apple",
+	    "tofu",
+	    "noodle",
+	    "carrot",
+	    "beef",
+	    "fish",
+	    "cabbage",
+	    "paneer"
+
+    ];
+
+   
+    function split( val ) {
+      return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+      return split( term ).pop();
+    }
+ 
+    $( "#tags" )
+      // don't navigate away from the field on tab when selecting an item
+      .bind( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).autocomplete( "instance" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        minLength: 0,
+        source: function( request, response ) {
+          // delegate back to autocomplete, but extract the last term
+          response( $.ui.autocomplete.filter(
+            availableTags, extractLast( request.term ) ) );
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          this.value = terms.join(",");
+		  
+		  
+		  //$('#tagsname').html('You selected: ' + this.value);
+          return false;
+        }
+      });
+
+
+      $(document).ready(function() {
+		$('#demo').multiselect();
+		$('#taste').multiselect();
+
+		 $('#other').multiselect({
+            enableFiltering: true,
+            includeSelectAllOption: true,
+            maxHeight: 400
+            //dropUp: true
+        });
+
+		});
+
+      
+    
+  });
+  </script>
+
+<style type="text/css">
+#one {
+  background-color:#FFCC33;
+  height:30%;    
+}
+
+#main_div {
+   height:750px;
+   background-image: url('http://www.hercampus.com/sites/default/files/2015/09/13/healthy-cooking_1.jpg'); 
+}
+
+#leftcolumn { width: 20%; float: left}
+
+#midcolumn { width: 60%; float: left}
+
+#rightcolumn { width: 33%; float: left}
+
+#footer {
+    background-color:black;
+    color:white;
+    clear:both;
+    text-align:center;
+    padding:5px; 
+}
+
+.exactCenter { 
+    width:800px; 
+    height:600px; 
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    margin-top: -250px; 
+    margin-left: -450px;
+    padding-left: 40px; 
+    background-image: url({% static 'chopping_board.png' %}); 
+    background-size: cover;
+
+  }
+
+</style>
+
+</head>
+<body>
+	<div id="one">
+	
+	<center>
+    <img src="{% static 'inhousemenu_logo2.png' %}" height="150" width="400"/>
+	</center>
+
+    </div>
+    
+    <div id="main_div">
+    		
+    	<div class="exactCenter"> 
+
+        <form action="/search_recipes/" method="get">
+          
+        <!--  <div class="ui-widget">
+            <center>
+              <label for="tags">Search </label>
+              <input id="tags" name="q" size="40">
+              <br>
+              <label id="tagsname"></label>
+              <br>
+            </center>
+        </div>-->
+            <b>
+            <br><br><br><br><br>
+            <h3> Main ingredients </h3>
+            <label class="checkbox-inline"><input type="checkbox" name="checks[]" value="Beef">Beef</label>
+            <label class="checkbox-inline"><input type="checkbox" name="checks[]" value="Chicken">Chicken</label>
+            <label class="checkbox-inline"><input type="checkbox" name="checks[]" value="Pork">Pork</label>
+            <label class="checkbox-inline"><input type="checkbox" name="checks[]" value="Lamb">Lamb</label>
+            <label class="checkbox-inline"><input type="checkbox" name="checks[]" value="Seafood">Seafood</label>
+            <br>
+            <label class="checkbox-inline"><input type="checkbox" name="checks[]" value="Carrots">Carrots</label>
+            <label class="checkbox-inline"><input type="checkbox" name="checks[]" value="Cabbage">Cabbage</label>
+            <label class="checkbox-inline"><input type="checkbox" name="checks[]" value="Corn">Corn</label>
+            <label class="checkbox-inline"><input type="checkbox" name="checks[]" value="Spinach">Spinach</label>
+            &nbsp;&nbsp;&nbsp;
+            {% if ingredients_name_list|length > 0 %}
+
+              <label for="other">Other ingredients</label>
+              <select id="other" name="other" multiple="multiple">
+                {% for s in ingredients_name_list %}
+                   <option value={{s.ingredient_name}}> {{s.ingredient_name}} </option>
+                  {% endfor %}
+              </select>
+
+            {% endif %}
+            <br>
+            <h3> Taste </h3>
+            
+            <!--<select multiple class="form-control" name="taste[]" id="taste[]" style="width: 300px;" size="5">-->
+            <select id="taste" name="taste[]" multiple="multiple" size="5">
+                  <option value="mixed" selected>Mixed Taste</option>
+                  <option value="spicy&hot">Spicy & Hot</option>
+              <option value="thick&creamy">Thick & Creamy</option>
+              <option value="light&refresh">Light & Refresh</option>
+              <option value="crispy&crunchy">Crispy & Crunchy</option>
+            </select>
+
+                <br>
+
+                <h3> Assumed ingredients available </h3>
+                
+                <label class="checkbox-inline"><input type="checkbox" name="checks[]" value="eggs">Eggs</label>
+            <label class="checkbox-inline"><input type="checkbox" name="checks[]" value="butter">Butter</label>
+            <label class="checkbox-inline"><input type="checkbox" name="checks[]" value="oil">Oil</label>
+            <label class="checkbox-inline"><input type="checkbox" name="checks[]" value="pepper">Pepper</label>
+            <label class="checkbox-inline"><input type="checkbox" name="checks[]" value="chilli">Chilli</label>
+              
+              <br><br><br>
+              <center> <input type="submit" value="Heat it Up !"> </center>
+            </b>
+        </form>
+
+      </div>
+
+			
+	</div> <!-- End main_div -->
+
+ <div id="footer">
+  Copyright © inhousemenu.com
+</div>
+
+ 
+</body>
+</html>

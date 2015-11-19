@@ -1,0 +1,79 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
+<style type="text/css">
+#one {
+    background-color:green;
+	height:150px;    
+}
+
+#leftcolumn { width: 25%; float: left}
+
+#rightcolumn { width: 75%; float: right}
+
+
+</style>
+
+</head>
+<body>
+	<div id="one">
+	
+	<center>
+    <img src="{% static 'inhousemenu_logo2.png' %}" height="150" width="400"/>
+	</center>
+
+    </div>
+    
+    <div id="leftcolumn">
+    	<br><br><br>
+
+    	{% for recipe in recipe_name_list %}
+    		<img src="{% static 'images/' %}{{ recipe.recipe_name }}.jpg" alt="No Image" height="200" width="200"/>
+    	{% endfor %}
+
+    </div>
+
+     <div id="rightcolumn">
+
+			{% for recipe in recipe_name_list %}
+			  
+				<font size="5" color="orange"> Recipe : {{ recipe.recipe_name }} </font>
+
+			{% endfor %}
+			
+				<br><br>
+
+				<font size="5" color="orange"> Ingredients </font>
+
+				<br><br>
+
+			{% for x in recipe_ingredients_list %}
+			    <li>{{ x.qty }} {{ x.ingredient }}</li>
+			    
+			{% endfor %}
+			
+				<br><br>
+				<font size="5" color="orange"> Method </font>
+
+				<br><br>
+
+			{% for r in recipe_content %}
+			    <li>{{ r.content }}</li>
+
+			{% endfor %}
+			
+
+     </div>
+
+
+ 
+</body>
+</html>

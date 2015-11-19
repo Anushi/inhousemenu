@@ -1,0 +1,74 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
+<style type="text/css">
+#one {
+    background-color:green;
+	height:150px;    
+}
+
+#leftcolumn { width: 25%; float: left}
+
+#rightcolumn { width: 75%; float: right}
+
+
+</style>
+
+</head>
+<body>
+	<div id="one">
+	
+	<center>
+    <img src="{% static 'inhousemenu_logo2.png' %}" height="150" width="400"/>
+	</center>
+
+    </div>
+
+    <div id="leftcolumn"><p>text goes here</p></div>
+
+    <div id="rightcolumn">
+		{% regroup recipe_ingredients_table by recipe_name as recipe_name_list %}
+
+		<table style="width:100%" border="0">
+			
+    		<tr>
+			{% for r in recipe_name_list %}
+
+				{% if forloop.counter0|divisibleby:2 %}
+					
+					</tr>
+					<tr>
+					<td>
+						
+						<img src="{% static 'images/' %}{{ r.grouper }}.jpg" alt="No Image" /><br>
+						<a href="/get_full_recipe/{{ r.grouper }}"/>{{ r.grouper }}</a>
+
+					</td>
+    				
+    			{% else %}
+
+    				<td>
+    					<img src="{% static 'images/' %}{{ r.grouper }}.jpg" alt="No Image" /><br>
+						<a href="/get_full_recipe/{{ r.grouper }}"/>{{ r.grouper }}</a>
+					</td>
+				{% endif %}
+				
+			{% endfor %}
+			
+		</tr>
+		</table>	
+		
+</div>
+
+
+ 
+</body>
+</html>

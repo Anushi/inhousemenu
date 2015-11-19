@@ -1,0 +1,26 @@
+Hello, {{ recipe_name_list}}
+
+<ul>
+{% for recipe in recipe_name_list %}
+    <li>{{ recipe.recipe_name }}</li>
+
+{% endfor %}
+</ul>
+
+
+<ul>
+{% for x in recipe_ingredients_list %}
+    <li>{{ x.qty }} {{ x.ingredient }}</li>
+    
+{% endfor %}
+</ul>
+
+
+
+<ul>
+{% for r in recipe_content %}
+    <li>{{ r.content }}</li>
+
+{% endfor %}
+</ul>
+    

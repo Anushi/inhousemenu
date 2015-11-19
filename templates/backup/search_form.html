@@ -1,0 +1,108 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<script>
+  $(function() {
+    var availableTags = [
+        "chicken",
+	    "spinach",
+	    "apple",
+	    "tofu",
+	    "noodle",
+	    "carrot",
+	    "beef",
+	    "fish",
+	    "cabbage"
+    ];
+    function split( val ) {
+      return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+      return split( term ).pop();
+    }
+ 
+    $( "#tags" )
+      // don't navigate away from the field on tab when selecting an item
+      .bind( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).autocomplete( "instance" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        minLength: 0,
+        source: function( request, response ) {
+          // delegate back to autocomplete, but extract the last term
+          response( $.ui.autocomplete.filter(
+            availableTags, extractLast( request.term ) ) );
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          this.value = terms.join(",");
+		  
+		  
+		  //$('#tagsname').html('You selected: ' + this.value);
+          return false;
+        }
+      });
+  });
+  </script>
+
+<style type="text/css">
+#one {
+    background-color:green;
+	height:150px;    
+}
+
+</style>
+
+</head>
+<body>
+	<div id="one">
+	
+	<center>
+    <img src="{% static 'inhousemenu_logo2.png' %}" height="150" width="400"/>
+	</center>
+
+    </div>
+    <br><br><br><br><br>
+	    <form action="/search_recipes/" method="get">
+	   		
+	   		<!--<div class="ui-widget" style="background-image: url({% static 'chopping_board.png' %});">-->
+	   		<div class="ui-widget">
+		   		<center>
+			  		<label for="tags">Enter ingredients: </label>
+			  		<input id="tags" name="q" size="40">
+			  		<br>
+			  		<label id="tagsname"></label>
+			  		<br>
+			  		<input type="submit" value="Search">
+		  		</center>
+	  		</div>
+	    </form>
+
+	
+
+	
+
+
+ 
+</body>
+</html>
